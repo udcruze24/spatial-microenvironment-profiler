@@ -1,0 +1,42 @@
+# 10x Genomics Visium HD Human Colorectal Cancer (CRC) Configuration
+project_name: "visium_hd_human_crc"
+seed: 42
+
+qc:
+  min_counts: 500
+  min_genes: 250
+  max_pct_mt: 20.0
+  min_cells: 10
+  target_sum: 10000.0
+  n_top_genes: 3000
+  hvg_flavor: "seurat_v3"
+
+morphology:
+  patch_size: 224
+  backbone: "resnet50"
+  pretrained: true
+  batch_size: 128
+  num_workers: 4
+  pca_components: 32
+  alpha_morphology: 0.35
+
+deconvolution:
+  method: "rctd"
+  doublet_mode: "full"
+  umi_min: 100
+  cell_min_instance: 25
+  max_cores: 4
+  r_script_path: "scripts/r_workers/run_rctd_cside.R"
+
+spatial_statistics:
+  coord_type: "grid"
+  n_neighs: 6
+  n_rings: 2
+  n_perms: 1000
+  cluster_key: "spatial_niche"
+  hotspot:
+    model: "danb"
+    n_neighbors: 30
+    fdr_threshold: 0.05
+    min_gene_threshold: 15
+

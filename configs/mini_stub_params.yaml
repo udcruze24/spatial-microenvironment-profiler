@@ -1,0 +1,42 @@
+# Mini Visium Synthetic Test Configuration (300 spots x 200 genes)
+project_name: "mini_stub_visium"
+seed: 42
+
+qc:
+  min_counts: 100
+  min_genes: 30
+  max_pct_mt: 25.0
+  min_cells: 3
+  target_sum: 5000.0
+  n_top_genes: 50
+  hvg_flavor: "seurat_v3"
+
+morphology:
+  patch_size: 64
+  backbone: "resnet18"
+  pretrained: false
+  batch_size: 32
+  num_workers: 0
+  pca_components: 8
+  alpha_morphology: 0.35
+
+deconvolution:
+  method: "rctd"
+  doublet_mode: "full"
+  umi_min: 50
+  cell_min_instance: 5
+  max_cores: 2
+  r_script_path: "scripts/r_workers/run_rctd_cside.R"
+
+spatial_statistics:
+  coord_type: "generic"
+  n_neighs: 6
+  n_rings: 2
+  n_perms: 100
+  cluster_key: "spatial_niche"
+  hotspot:
+    model: "danb"
+    n_neighbors: 15
+    fdr_threshold: 0.10
+    min_gene_threshold: 5
+
