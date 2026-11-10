@@ -46,6 +46,7 @@ coverage.xml
 # Large Omics Data & Local Downloads
 data/raw/
 data/processed/
+data/input/
 *.h5ad
 *.h5
 *.tif

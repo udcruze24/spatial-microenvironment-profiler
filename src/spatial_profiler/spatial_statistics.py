@@ -90,6 +90,7 @@ def compute_niche_enrichment(
 
 def compute_spatial_autocorrelation(
     adata: ad.AnnData,
+    genes: list[str] | None = None,
     mode: str = "moran",
     n_perms: int = 100,
 ) -> pd.DataFrame:
@@ -97,6 +98,7 @@ def compute_spatial_autocorrelation(
 
     Args:
         adata: AnnData with spatial neighbor graph.
+        genes: Optional list of genes to evaluate (defaults to all or HVGs).
         mode: "moran" or "geary".
         n_perms: Permutations for significance estimation.
 
@@ -104,11 +106,12 @@ def compute_spatial_autocorrelation(
         DataFrame ranking genes by spatial autocorrelation statistic (Moran's I / Geary's C).
     """
     logger.info("Computing spatial autocorrelation (mode=%s)...", mode)
+    kwargs = {"mode": mode, "n_perms": n_perms, "seed": 42}
+    if genes is not None:
+        kwargs["genes"] = genes
     sq.gr.spatial_autocorr(
         adata,
-        mode=mode,
-        n_perms=n_perms,
-        seed=42,
+        **kwargs,
     )
     key = "moranI" if mode == "moran" else "gearyC"
     df = adata.uns[key].sort_values(by="I" if mode == "moran" else "C", ascending=(mode != "moran"))
